@@ -1,5 +1,6 @@
 import { useState } from "react";
 import navbarItems from "../data/navbarItems.json";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [toggleDropdown, setToggleDropdown] = useState<string | null>(null);
@@ -8,15 +9,15 @@ export default function Header() {
   };
   return (
     <header className="flex gap-40 select-none text-white bg-blue-900 py-4 px-3 items-center font-sans ">
-      <a href="/" className="cursor-pointer text-2xl font-extrabold">
+      <Link to="/" className="cursor-pointer text-2xl font-extrabold">
         FootyQuizMaster
-      </a>
+      </Link>
       <nav className="cursor-pointer ">
         <ul className="flex gap-20">
           {navbarItems.map((item) => (
             <li key={item.name}>
               {item.link ? (
-                <a href={item.link}>{item.name}</a>
+                <Link to={item.link}>{item.name}</Link>
               ) : (
                 <span onClick={() => handleDropdownToggle(item.name)}>
                   {item.name}
@@ -26,7 +27,7 @@ export default function Header() {
                 <ul className="absolute">
                   {item.subItems.map((subItem) => (
                     <li key={subItem.name}>
-                      <a href={subItem.link}>{subItem.name}</a>
+                      <Link to={subItem.link}>{subItem.name}</Link>
                     </li>
                   ))}
                 </ul>
