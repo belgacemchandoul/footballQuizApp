@@ -1,10 +1,14 @@
-function App() {
+import Games from "./components/Games";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+export default function App() {
   return (
-    <div className="flex flex-col items-center gap-7 h-screen justify-center">
-      <div className="uppercase text-9xl">hala madridaaaaa</div>
-      <img src="../src/assets/Real Madrid CF.png" className="w-28" />
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="container mx-auto flex-grow flex flex-col items-center justify-center">
+        <Games />
+      </main>
+      <Footer />
     </div>
   );
 }
-
-export default App;

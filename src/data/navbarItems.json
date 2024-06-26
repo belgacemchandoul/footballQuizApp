@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Home",
+    "link": "/"
+  },
+  {
+    "name": "Games",
+    "subItems": [
+      {
+        "name": "Who Am I ?",
+        "link": "/who-am-i"
+      },
+      {
+        "name": "Guess the result",
+        "link": "/guess-the-result"
+      },
+      {
+        "name": "Who's missing ?",
+        "link": "/whos-missing"
+      },
+      {
+        "name": "Who has more goals ?",
+        "link": "/who-has-more-goals"
+      }
+    ]
+  },
+  {
+    "name": "Contribute",
+    "link": "/contribute"
+  }
+]

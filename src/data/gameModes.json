@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Who Am I ?",
+    "link": "/who-am-i",
+    "description": "description for game mode"
+  },
+  {
+    "name": "Guess the result",
+    "link": "/guess-the-result",
+    "description": "description for game mode"
+  },
+  {
+    "name": "Who's missing ?",
+    "link": "/whos-missing",
+    "description": "description for game mode"
+  },
+  {
+    "name": "Who has more goals ?",
+    "link": "/who-has-more-goals",
+    "description": "description for game mode"
+  }
+]
