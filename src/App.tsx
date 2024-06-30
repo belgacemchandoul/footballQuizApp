@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 import usePlayersData from "./hooks/usePlayersData";
 export default function App() {
   const { players, loading } = usePlayersData();
-  console.log(players);
+  loading ? console.log("load") : console.log(players);
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
