@@ -3,16 +3,17 @@ import Layout from "../components/Layout";
 import usePlayersData from "../hooks/usePlayersData";
 import Player from "../types/players";
 import normalizeString from "../utils/normalizeString";
+import randomizeId from "../utils/randomizeId";
 
 const WhoAmI = () => {
-  const [selectedPlayer, setSelectedPlayer] = useState<Player>();
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
   const [input, setInput] = useState<string>("");
   const [gamePhase, setGamePhase] = useState<string>("welcome");
   const [score, setScore] = useState<number>(0);
   const maxNumRef = useRef(0);
   const { players, loading, error } = usePlayersData();
 
-  const handleClick = () => {
+  const handleGameStart = () => {
     setGamePhase("started");
     if (maxNumRef.current >= 5) {
       setGamePhase("over");
@@ -22,7 +23,7 @@ const WhoAmI = () => {
     let validPlayerFound = false;
 
     while (!validPlayerFound) {
-      const randomId = Math.floor(Math.random() * players.length);
+      const randomId = randomizeId(players);
       const player = players[randomId];
 
       if (player.career.length > 1) {
@@ -35,14 +36,15 @@ const WhoAmI = () => {
   const handleChange = (e: string) => {
     setInput(e);
   };
-  const handleSubmit = () => {
+  const handleGuess = () => {
+    if (selectedPlayer === null) return;
     const normalizedGuess = normalizeString(input);
     const normalizedPlayerName = normalizeString(selectedPlayer.name);
     if (normalizedGuess === normalizedPlayerName) {
       setScore((prevScore) => prevScore + 1);
     }
     setInput("");
-    handleClick();
+    handleGameStart();
   };
 
   if (loading) {
@@ -56,7 +58,9 @@ const WhoAmI = () => {
     <Layout>
       {" "}
       <span>Who Am I?</span>
-      {gamePhase === "welcome" && <button onClick={handleClick}>start</button>}
+      {gamePhase === "welcome" && (
+        <button onClick={handleGameStart}>start</button>
+      )}
       {gamePhase === "started" && (
         <div>
           <div>{selectedPlayer?.name}</div>
@@ -79,7 +83,7 @@ const WhoAmI = () => {
             placeholder="Guess the Player"
           />
 
-          <button onClick={handleSubmit}>Guess</button>
+          <button onClick={handleGuess}>Guess</button>
         </div>
       )}
       {gamePhase === "over" && <div>Your Score is {score} </div>}
