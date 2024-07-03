@@ -43,9 +43,9 @@ export default function Header() {
                 </div>
               )}
               {item.subItems && item.name === toggleDropdown && (
-                <ul className="absolute mt-2 flex flex-col gap-3 p-4 bg-violet-500 text-sm font-semibold ">
+                <ul className="absolute mt-2 flex flex-col gap-3 p-4 bg-violet-500 text-sm font-semibold w-52 z-50">
                   {item.subItems.map((subItem) => (
-                    <li key={subItem.name}>
+                    <li key={subItem.name} className="w-full">
                       <Link
                         to={subItem.link}
                         className=" hover:duration-300 hover:opacity-75 hover:pl-2 w-full "

@@ -1,6 +1,6 @@
 type Button = {
   text: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 };
 const Button = ({ text, onClick }: Button) => {
   return (

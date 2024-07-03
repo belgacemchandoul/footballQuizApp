@@ -2,21 +2,25 @@
   {
     "name": "Who Am I ?",
     "link": "/who-am-i",
-    "description": "description for game mode"
+    "description": "Guess the player from his career path.",
+    "image": "anonymous"
   },
   {
     "name": "Guess the result",
     "link": "/guess-the-result",
-    "description": "description for game mode"
+    "description": "Guess the final game's result.",
+    "image": "scoreboard"
   },
   {
     "name": "Who's missing ?",
     "link": "/who-Is-missing",
-    "description": "description for game mode"
+    "description": "Guess the missing player in the starting XI.",
+    "image": "pitch"
   },
   {
     "name": "Who has more goals ?",
     "link": "/who-has-more-goals",
-    "description": "description for game mode"
+    "description": "Guess if the player has more or less goals.",
+    "image": "goals"
   }
 ]

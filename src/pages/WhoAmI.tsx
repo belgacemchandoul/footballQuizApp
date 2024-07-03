@@ -6,6 +6,7 @@ import normalizeString from "../utils/normalizeString";
 import randomizeId from "../utils/randomizeId";
 import handleRepetition from "../utils/handleRepetition";
 import Button from "../components/Button";
+import Title from "../components/Title";
 
 const WhoAmI = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -82,8 +83,7 @@ const WhoAmI = () => {
 
   return (
     <Layout>
-      {" "}
-      <span>Who Am I?</span>
+      <Title title="Who Am I" />
       {gamePhase === "welcome" && (
         <Button text="start" onClick={handleGameStart} />
       )}

@@ -1,4 +1,5 @@
 // src/components/Layout.tsx
+import Footer from "./Footer";
 import Header from "./Header";
 // import Footer from "./Footer";
 import { ReactNode } from "react";
@@ -10,8 +11,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="container mx-auto flex-grow">{children}</main>
-      {/* <Footer /> */}
+      <main className="inner-container mx-auto flex-grow ">{children}</main>
+      <Footer />
     </div>
   );
 };
