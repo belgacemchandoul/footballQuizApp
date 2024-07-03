@@ -5,6 +5,7 @@ import Squad from "../types/squads";
 import randomizeId from "../utils/randomizeId";
 import normalizeString from "../utils/normalizeString";
 import handleRepetition from "../utils/handleRepetition";
+import Button from "../components/Button";
 
 const WhoIsMissing = () => {
   const { squads, loading, error } = useSquadsData();
@@ -55,7 +56,7 @@ const WhoIsMissing = () => {
     <Layout>
       <div>Who Is Missing?</div>
       {gamePhase === "welcome" && (
-        <button onClick={handleGameStart}>start</button>
+        <Button text="start" onClick={handleGameStart} />
       )}
       {gamePhase === "started" && (
         <section>

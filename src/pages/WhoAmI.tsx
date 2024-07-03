@@ -5,6 +5,7 @@ import Player from "../types/players";
 import normalizeString from "../utils/normalizeString";
 import randomizeId from "../utils/randomizeId";
 import handleRepetition from "../utils/handleRepetition";
+import Button from "../components/Button";
 
 const WhoAmI = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -84,11 +85,10 @@ const WhoAmI = () => {
       {" "}
       <span>Who Am I?</span>
       {gamePhase === "welcome" && (
-        <button onClick={handleGameStart}>start</button>
+        <Button text="start" onClick={handleGameStart} />
       )}
       {gamePhase === "started" && (
         <div>
-          <div>{selectedPlayer?.name}</div>
           <section className="flex gap-7 items-center">
             {selectedPlayer?.career?.map((team, index) => (
               <div key={index} className="flex flex-col items-center">

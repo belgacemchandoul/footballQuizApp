@@ -4,6 +4,7 @@ import useMatchesData from "../hooks/useMatchesData";
 import Match from "../types/matches";
 import randomizeId from "../utils/randomizeId";
 import { GuessInputValues } from "../types/guessInputValues";
+import Button from "../components/Button";
 
 const GuessTheResult = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
@@ -69,14 +70,12 @@ const GuessTheResult = () => {
       <div>
         <p>Guess The Result</p>
         {gamePhase === "welcome" && (
-          <button onClick={handleGameStart}>start</button>
+          <Button text="start" onClick={handleGameStart} />
         )}
         {gamePhase === "started" && (
           <section>
             <div>
-              <div>
-                {selectedMatch?.awayTeam.name} {selectedMatch?.awayTeamGoals}
-              </div>{" "}
+              <div>{selectedMatch?.awayTeam.name}</div>{" "}
               <input
                 onChange={(e) => handleChange(e)}
                 name="awayTeam"
@@ -84,9 +83,7 @@ const GuessTheResult = () => {
                 type="number"
                 required
               />
-              <div>
-                {selectedMatch?.homeTeam.name} {selectedMatch?.homeTeamGoals}
-              </div>{" "}
+              <div>{selectedMatch?.homeTeam.name}</div>{" "}
               <input
                 onChange={(e) => handleChange(e)}
                 name="homeTeam"

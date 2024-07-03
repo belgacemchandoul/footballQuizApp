@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import usePlayersData from "../hooks/usePlayersData";
 import Player from "../types/players";
 import randomizeId from "../utils/randomizeId";
+import Button from "../components/Button";
 
 const WhoHasMoreGoals = () => {
   const [basePlayer, setBasePlayer] = useState<Player | null>(null);
@@ -80,14 +81,14 @@ const WhoHasMoreGoals = () => {
     <Layout>
       <div>Who Has More Goals ?</div>
       {gamePhase === "welcome" && (
-        <button onClick={handleGameStart}>start</button>
+        <Button text="start" onClick={handleGameStart} />
       )}
       {gamePhase === "started" && (
         <section>
           <div>
-            {basePlayer?.name} {basePlayer?.goals}
+            {basePlayer?.name}
             <div>
-              {nextPlayer?.name} {nextPlayer?.goals}
+              {nextPlayer?.name}
               <button onClick={(e) => handleGoalsCheck(e)} value="more">
                 more
               </button>

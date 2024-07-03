@@ -8,14 +8,17 @@ export default function Header() {
     setToggleDropdown(toggleDropdown === name ? null : name);
   };
   return (
-    <header className="flex gap-40 select-none text-white bg-blue-900 py-4 px-3 items-center font-sans ">
+    <header className="flex gap-40 select-none text-white bg-gradient-to-r from-violet-600 to-indigo-600 py-4 px-3 items-center font-sans ">
       <Link to="/" className="cursor-pointer text-2xl font-extrabold">
         FootyQuizMaster
       </Link>
       <nav className="cursor-pointer ">
-        <ul className="flex gap-20">
+        <ul className="flex gap-20 font-medium">
           {navbarItems.map((item) => (
-            <li key={item.name}>
+            <li
+              key={item.name}
+              className=" hover:duration-300 hover:opacity-75"
+            >
               {item.link ? (
                 <Link to={item.link}>{item.name}</Link>
               ) : (
