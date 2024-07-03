@@ -59,7 +59,11 @@ const WhoIsMissing = () => {
       )}
       {gamePhase === "started" && (
         <section>
-          <input value={input} onChange={(e) => setInput(e.target.value)} />
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            required
+          />
           <button onClick={handleGuess}>Guess</button>
         </section>
       )}

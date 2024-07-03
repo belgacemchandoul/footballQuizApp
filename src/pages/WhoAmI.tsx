@@ -106,6 +106,8 @@ const WhoAmI = () => {
             value={guess}
             name="input"
             placeholder="Guess the Player"
+            required
+            type="text"
           />
 
           <button onClick={handleGuess}>Guess</button>

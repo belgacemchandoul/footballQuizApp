@@ -82,6 +82,7 @@ const GuessTheResult = () => {
                 name="awayTeam"
                 value={inputValues.awayTeam}
                 type="number"
+                required
               />
               <div>
                 {selectedMatch?.homeTeam.name} {selectedMatch?.homeTeamGoals}
@@ -91,6 +92,7 @@ const GuessTheResult = () => {
                 name="homeTeam"
                 value={inputValues.homeTeam}
                 type="number"
+                required
               />
             </div>
             <button onClick={handleGuess}>Guess</button>
