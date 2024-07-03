@@ -1,6 +1,8 @@
 import { useState } from "react";
 import navbarItems from "../data/navbarItems.json";
 import { Link } from "react-router-dom";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 export default function Header() {
   const [toggleDropdown, setToggleDropdown] = useState<string | null>(null);
@@ -15,22 +17,41 @@ export default function Header() {
       <nav className="cursor-pointer ">
         <ul className="flex gap-20 font-medium">
           {navbarItems.map((item) => (
-            <li
-              key={item.name}
-              className=" hover:duration-300 hover:opacity-75"
-            >
+            <li key={item.name}>
               {item.link ? (
-                <Link to={item.link}>{item.name}</Link>
-              ) : (
-                <span onClick={() => handleDropdownToggle(item.name)}>
+                <Link
+                  to={item.link}
+                  className=" hover:duration-300 hover:opacity-75"
+                >
                   {item.name}
-                </span>
+                </Link>
+              ) : (
+                <div
+                  className="flex gap-2 items-center justify-center hover:duration-300 hover:opacity-75"
+                  onClick={() => handleDropdownToggle(item.name)}
+                >
+                  <span className=" hover:duration-300 hover:opacity-75">
+                    {item.name}
+                  </span>
+                  <div className="">
+                    {toggleDropdown ? (
+                      <ArrowDropUpIcon />
+                    ) : (
+                      <ArrowDropDownIcon />
+                    )}
+                  </div>
+                </div>
               )}
               {item.subItems && item.name === toggleDropdown && (
-                <ul className="absolute">
+                <ul className="absolute mt-2 flex flex-col gap-3 p-4 bg-violet-500 text-sm font-semibold ">
                   {item.subItems.map((subItem) => (
                     <li key={subItem.name}>
-                      <Link to={subItem.link}>{subItem.name}</Link>
+                      <Link
+                        to={subItem.link}
+                        className=" hover:duration-300 hover:opacity-75 hover:pl-2 w-full "
+                      >
+                        {subItem.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>
