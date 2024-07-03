@@ -4,6 +4,7 @@ import useSquadsData from "../hooks/useSquadsData";
 import Squad from "../types/squads";
 import randomizeId from "../utils/randomizeId";
 import normalizeString from "../utils/normalizeString";
+import handleRepetition from "../utils/handleRepetition";
 
 const WhoIsMissing = () => {
   const { squads, loading, error } = useSquadsData();
@@ -12,30 +13,36 @@ const WhoIsMissing = () => {
   const [score, setScore] = useState<number>(0);
   const [input, setInput] = useState<string>("");
   const maxNumRef = useRef(0);
+  const prevSquadRef = useRef<Squad[]>([]);
 
-  const handleGameStart = () => {
-    setGamePhase("start");
+  const randomSquad = () => {
     if (maxNumRef.current >= 5) {
       setGamePhase("over");
       return;
     }
     const randomId = randomizeId(squads);
-    setSelectedSquad(squads[randomId]);
-    maxNumRef.current += 1;
+    const squad = squads[randomId];
+    if (!prevSquadRef.current.includes(squad)) {
+      prevSquadRef.current = handleRepetition(squad, prevSquadRef.current);
+      setSelectedSquad(squad);
+      maxNumRef.current += 1;
+    }
+  };
+  const handleGameStart = () => {
+    setGamePhase("started");
+    randomSquad();
   };
   const handleGuess = () => {
     if (selectedSquad === null) return;
     const normalizedGuess = normalizeString(input);
     const normalizedPlayerName = normalizeString(selectedSquad?.missingPlayer);
     if (normalizedGuess === normalizedPlayerName) {
-      console.log("saha");
       setScore((prevScore) => (prevScore += 1));
       setInput("");
-      handleGameStart();
+      randomSquad();
     } else {
-      console.log("aasba");
       setInput("");
-      handleGameStart();
+      randomSquad();
     }
   };
   if (loading) {
@@ -47,11 +54,15 @@ const WhoIsMissing = () => {
   return (
     <Layout>
       <div>Who Is Missing?</div>
-      <section>
+      {gamePhase === "welcome" && (
         <button onClick={handleGameStart}>start</button>
-        <input value={input} onChange={(e) => setInput(e.target.value)} />
-        <button onClick={handleGuess}>Guess</button>
-      </section>
+      )}
+      {gamePhase === "started" && (
+        <section>
+          <input value={input} onChange={(e) => setInput(e.target.value)} />
+          <button onClick={handleGuess}>Guess</button>
+        </section>
+      )}
       {gamePhase === "over" && <div>your score is {score}</div>}
     </Layout>
   );

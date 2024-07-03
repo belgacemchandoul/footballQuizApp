@@ -15,21 +15,18 @@ const GuessTheResult = () => {
   });
   const { matches, loading, error } = useMatchesData();
   const maxNumRef = useRef(0);
-  if (loading) {
-    return <div>loading</div>;
-  }
-  if (error) {
-    console.error(error);
-  }
+  const prevMatchesRef = useRef<Match[]>([]);
+  const randomMatch = () => {
+    const randomId = randomizeId(matches);
+    const match = matches[randomId];
+    if (!prevMatchesRef.current.includes(match)) {
+      setSelectedMatch(match);
+      maxNumRef.current += 1;
+    }
+  };
   const handleGameStart = () => {
     setGamePhase("started");
-    if (maxNumRef.current >= 5) {
-      setGamePhase("over");
-      return;
-    }
-    const randomId = randomizeId(matches);
-    setSelectedMatch(matches[randomId]);
-    maxNumRef.current += 1;
+    randomMatch();
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,47 +38,64 @@ const GuessTheResult = () => {
     });
   };
   const handleGuess = () => {
+    if (maxNumRef.current >= 5) {
+      setGamePhase("over");
+      return;
+    }
     if (
       selectedMatch?.awayTeamGoals === inputValues.awayTeam &&
       selectedMatch.homeTeamGoals === inputValues.homeTeam
     ) {
       console.log("well done");
       setScore((prevScore) => prevScore + 1);
-    } else console.log("aasba");
-    setInputValues({
-      homeTeam: 0,
-      awayTeam: 0,
-    });
-    handleGameStart();
+      randomMatch();
+    } else {
+      console.log("aasba");
+      setInputValues({
+        homeTeam: 0,
+        awayTeam: 0,
+      });
+      randomMatch();
+    }
   };
+  if (loading) {
+    return <div>loading</div>;
+  }
+  if (error) {
+    console.error(error);
+  }
   return (
     <Layout>
       <div>
         <p>Guess The Result</p>
-        <section>
+        {gamePhase === "welcome" && (
           <button onClick={handleGameStart}>start</button>
-          <div>
+        )}
+        {gamePhase === "started" && (
+          <section>
             <div>
-              {selectedMatch?.awayTeam.name} {selectedMatch?.awayTeamGoals}
-            </div>{" "}
-            <input
-              onChange={(e) => handleChange(e)}
-              name="awayTeam"
-              value={inputValues.awayTeam}
-              type="number"
-            />
-            <div>
-              {selectedMatch?.homeTeam.name} {selectedMatch?.homeTeamGoals}
-            </div>{" "}
-            <input
-              onChange={(e) => handleChange(e)}
-              name="homeTeam"
-              value={inputValues.homeTeam}
-              type="number"
-            />
-          </div>
-          <button onClick={handleGuess}>Guess</button>
-        </section>
+              <div>
+                {selectedMatch?.awayTeam.name} {selectedMatch?.awayTeamGoals}
+              </div>{" "}
+              <input
+                onChange={(e) => handleChange(e)}
+                name="awayTeam"
+                value={inputValues.awayTeam}
+                type="number"
+              />
+              <div>
+                {selectedMatch?.homeTeam.name} {selectedMatch?.homeTeamGoals}
+              </div>{" "}
+              <input
+                onChange={(e) => handleChange(e)}
+                name="homeTeam"
+                value={inputValues.homeTeam}
+                type="number"
+              />
+            </div>
+            <button onClick={handleGuess}>Guess</button>
+          </section>
+        )}
         {gamePhase === "over" && <div>your score is {score}</div>}
       </div>
     </Layout>

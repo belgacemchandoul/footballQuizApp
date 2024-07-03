@@ -4,47 +4,72 @@ import usePlayersData from "../hooks/usePlayersData";
 import Player from "../types/players";
 import normalizeString from "../utils/normalizeString";
 import randomizeId from "../utils/randomizeId";
+import handleRepetition from "../utils/handleRepetition";
 
 const WhoAmI = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
-  const [input, setInput] = useState<string>("");
+  const [guess, setGuessInput] = useState<string>("");
   const [gamePhase, setGamePhase] = useState<string>("welcome");
   const [score, setScore] = useState<number>(0);
   const maxNumRef = useRef(0);
+  const prevPlayersRef = useRef<Player[]>([]);
   const { players, loading, error } = usePlayersData();
 
-  const handleGameStart = () => {
-    setGamePhase("started");
-    if (maxNumRef.current >= 5) {
-      setGamePhase("over");
-      return;
-    }
-
+  const gameProcess = () => {
     let validPlayerFound = false;
 
     while (!validPlayerFound) {
       const randomId = randomizeId(players);
       const player = players[randomId];
 
-      if (player.career.length > 1) {
+      if (
+        player?.career &&
+        player.career.length > 1 &&
+        !prevPlayersRef.current.includes(player)
+      ) {
+        prevPlayersRef.current = handleRepetition(
+          player,
+          prevPlayersRef.current
+        );
         setSelectedPlayer(player);
         maxNumRef.current += 1;
         validPlayerFound = true;
       }
     }
   };
-  const handleChange = (e: string) => {
-    setInput(e);
+  const handleGameStart = () => {
+    setGamePhase("started");
+    gameProcess();
   };
+
   const handleGuess = () => {
     if (selectedPlayer === null) return;
-    const normalizedGuess = normalizeString(input);
+    const normalizedGuess = normalizeString(guess);
     const normalizedPlayerName = normalizeString(selectedPlayer.name);
+
     if (normalizedGuess === normalizedPlayerName) {
+      console.log("saha");
       setScore((prevScore) => prevScore + 1);
+      if (maxNumRef.current >= 5) {
+        setGamePhase("over");
+        return;
+      }
+
+      setGuessInput("");
+
+      gameProcess();
+    } else {
+      console.log("aasba");
+      setScore((prevScore) => prevScore + 1);
+      if (maxNumRef.current >= 5) {
+        setGamePhase("over");
+        return;
+      }
+
+      setGuessInput("");
+
+      gameProcess();
     }
-    setInput("");
-    handleGameStart();
   };
 
   if (loading) {
@@ -77,8 +102,8 @@ const WhoAmI = () => {
             ))}
           </section>
           <input
-            onChange={(e) => handleChange(e.target.value)}
-            value={input}
+            onChange={(e) => setGuessInput(e.target.value)}
+            value={guess}
             name="input"
             placeholder="Guess the Player"
           />

@@ -7,9 +7,13 @@ import randomizeId from "../utils/randomizeId";
 const WhoHasMoreGoals = () => {
   const [basePlayer, setBasePlayer] = useState<Player | null>(null);
   const [nextPlayer, setNextPlayer] = useState<Player | null>(null);
+  const [score, setScore] = useState<number>(0);
+  const [gamePhase, setGamePhase] = useState<string>("welcome");
+
   const { players, loading, error } = usePlayersData();
 
   const handleGameStart = () => {
+    setGamePhase("started");
     let validPlayerFound = false;
     while (!validPlayerFound) {
       const basePlayerRandomId = randomizeId(players);
@@ -56,11 +60,13 @@ const WhoHasMoreGoals = () => {
     if (basePlayer.goals < nextPlayer.goals && value === "more") {
       setBasePlayer(nextPlayer);
       nextPlayerGeneration(nextPlayer);
+      setScore((prevScore) => prevScore + 1);
     } else if (basePlayer.goals > nextPlayer.goals && value === "less") {
       setBasePlayer(nextPlayer);
       nextPlayerGeneration(nextPlayer);
+      setScore((prevScore) => prevScore + 1);
     } else {
-      console.log("game over");
+      setGamePhase("over");
     }
   };
 
@@ -73,21 +79,26 @@ const WhoHasMoreGoals = () => {
   return (
     <Layout>
       <div>Who Has More Goals ?</div>
-      <section>
+      {gamePhase === "welcome" && (
         <button onClick={handleGameStart}>start</button>
-        <div>
-          {basePlayer?.name} {basePlayer?.goals}
+      )}
+      {gamePhase === "started" && (
+        <section>
           <div>
-            {nextPlayer?.name} {nextPlayer?.goals}
-            <button onClick={(e) => handleGoalsCheck(e)} value="more">
-              more
-            </button>
-            <button onClick={(e) => handleGoalsCheck(e)} value="less">
-              less
-            </button>
+            {basePlayer?.name} {basePlayer?.goals}
+            <div>
+              {nextPlayer?.name} {nextPlayer?.goals}
+              <button onClick={(e) => handleGoalsCheck(e)} value="more">
+                more
+              </button>
+              <button onClick={(e) => handleGoalsCheck(e)} value="less">
+                less
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+      {gamePhase === "over" && <div>your score is {score}</div>}
     </Layout>
   );
 };
