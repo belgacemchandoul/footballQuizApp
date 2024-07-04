@@ -3,7 +3,10 @@ import { Game } from "../types/gameMode";
 
 const GameCard: React.FC<Game> = ({ name, link, description }) => {
   return (
-    <Link to={link} className="border rounded-md flex flex-col items-center ">
+    <Link
+      to={link}
+      className="border rounded-md flex flex-col items-center shadow-sm"
+    >
       <img src="/anonymous.jpg" width={150} className="opacity-90 blur-sm" />
       <div className="flex items-center flex-col w-full ">
         <section className="flex justify-between gap-3 w-full bg-indigo-500  text-white p-4 items-center">

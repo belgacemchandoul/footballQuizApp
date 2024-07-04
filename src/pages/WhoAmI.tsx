@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import usePlayersData from "../hooks/usePlayersData";
 import Player from "../types/players";
@@ -14,8 +14,15 @@ const WhoAmI = () => {
   const [gamePhase, setGamePhase] = useState<string>("welcome");
   const [score, setScore] = useState<number>(0);
   const maxNumRef = useRef(0);
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const prevPlayersRef = useRef<Player[]>([]);
   const { players, loading, error } = usePlayersData();
+
+  useEffect(() => {
+    if (gamePhase === "started" && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [gamePhase]);
 
   const gameProcess = () => {
     let validPlayerFound = false;
@@ -41,6 +48,9 @@ const WhoAmI = () => {
   };
   const handleGameStart = () => {
     setGamePhase("started");
+    if (inputRef.current !== null) {
+      inputRef.current.focus();
+    }
     gameProcess();
   };
 
@@ -83,7 +93,10 @@ const WhoAmI = () => {
 
   return (
     <Layout>
-      <Title title="Who Am I" />
+      <Title
+        title="Who Am I?"
+        description="Think you can guess the footballer from their career path? Welcome to the ultimate challenge for true football enthusiasts! You'll be given a series of clues detailing the clubs a player has been a part of throughout their career. Your task is to identify the footballer based on these career milestones."
+      />
       {gamePhase === "welcome" && (
         <Button text="start" onClick={handleGameStart} />
       )}
@@ -108,9 +121,10 @@ const WhoAmI = () => {
             placeholder="Guess the Player"
             required
             type="text"
+            ref={inputRef}
           />
 
-          <button onClick={handleGuess}>Guess</button>
+          <Button text="guess" onClick={handleGuess} />
         </div>
       )}
       {gamePhase === "over" && <div>Your Score is {score} </div>}
