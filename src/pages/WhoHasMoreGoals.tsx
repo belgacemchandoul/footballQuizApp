@@ -4,6 +4,7 @@ import usePlayersData from "../hooks/usePlayersData";
 import Player from "../types/players";
 import randomizeId from "../utils/randomizeId";
 import Button from "../components/Button";
+import Title from "../components/Title";
 
 const WhoHasMoreGoals = () => {
   const [basePlayer, setBasePlayer] = useState<Player | null>(null);
@@ -79,7 +80,10 @@ const WhoHasMoreGoals = () => {
   }
   return (
     <Layout>
-      <div>Who Has More Goals ?</div>
+      <Title
+        title="Who has more goals ?"
+        description="How well do you know football’s top scorers? Welcome to Who Has More Goals?, the ultimate challenge for football fans! In this game, you'll be presented with two players and your task is to guess if the second player has scored more or fewer goals than the first. "
+      />
       {gamePhase === "welcome" && (
         <Button text="start" onClick={handleGameStart} />
       )}

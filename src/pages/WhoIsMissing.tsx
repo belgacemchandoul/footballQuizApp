@@ -6,6 +6,7 @@ import randomizeId from "../utils/randomizeId";
 import normalizeString from "../utils/normalizeString";
 import handleRepetition from "../utils/handleRepetition";
 import Button from "../components/Button";
+import Title from "../components/Title";
 
 const WhoIsMissing = () => {
   const { squads, loading, error } = useSquadsData();
@@ -54,7 +55,10 @@ const WhoIsMissing = () => {
   }
   return (
     <Layout>
-      <div>Who Is Missing?</div>
+      <Title
+        title="Who is missing ?"
+        description="Are you a true football connoisseur? Welcome to Who Is Missing?, the ultimate challenge for those who know their football lineups! In this game, you’ll be presented with a lineup from a historical match, along with details such as the teams, competition, and phase. Your task is to identify the missing player from the lineup."
+      />
       {gamePhase === "welcome" && (
         <Button text="start" onClick={handleGameStart} />
       )}

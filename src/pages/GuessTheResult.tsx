@@ -5,6 +5,7 @@ import Match from "../types/matches";
 import randomizeId from "../utils/randomizeId";
 import { GuessInputValues } from "../types/guessInputValues";
 import Button from "../components/Button";
+import Title from "../components/Title";
 
 const GuessTheResult = () => {
   const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
@@ -67,36 +68,37 @@ const GuessTheResult = () => {
   }
   return (
     <Layout>
-      <div>
-        <p>Guess The Result</p>
-        {gamePhase === "welcome" && (
-          <Button text="start" onClick={handleGameStart} />
-        )}
-        {gamePhase === "started" && (
-          <section>
-            <div>
-              <div>{selectedMatch?.awayTeam.name}</div>{" "}
-              <input
-                onChange={(e) => handleChange(e)}
-                name="awayTeam"
-                value={inputValues.awayTeam}
-                type="number"
-                required
-              />
-              <div>{selectedMatch?.homeTeam.name}</div>{" "}
-              <input
-                onChange={(e) => handleChange(e)}
-                name="homeTeam"
-                value={inputValues.homeTeam}
-                type="number"
-                required
-              />
-            </div>
-            <button onClick={handleGuess}>Guess</button>
-          </section>
-        )}
-        {gamePhase === "over" && <div>your score is {score}</div>}
-      </div>
+      <Title
+        title="Guess the result"
+        description="Think you know your football history? Welcome to Guess the Result, where you get to test your knowledge of past games! In this challenge, you'll be given key details such as the teams involved, the competition, and the phase of the tournament. Your task is to guess the final score of these historical matches."
+      />
+      {gamePhase === "welcome" && (
+        <Button text="start" onClick={handleGameStart} />
+      )}
+      {gamePhase === "started" && (
+        <section>
+          <div>
+            <div>{selectedMatch?.awayTeam.name}</div>{" "}
+            <input
+              onChange={(e) => handleChange(e)}
+              name="awayTeam"
+              value={inputValues.awayTeam}
+              type="number"
+              required
+            />
+            <div>{selectedMatch?.homeTeam.name}</div>{" "}
+            <input
+              onChange={(e) => handleChange(e)}
+              name="homeTeam"
+              value={inputValues.homeTeam}
+              type="number"
+              required
+            />
+          </div>
+          <button onClick={handleGuess}>Guess</button>
+        </section>
+      )}
+      {gamePhase === "over" && <div>your score is {score}</div>}
     </Layout>
   );
 };
