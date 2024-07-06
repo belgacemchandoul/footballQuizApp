@@ -8,7 +8,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col select-none overflow-hidden">
+    <div className="min-h-screen flex flex-col select-none overflow-hidden scroll-smooth">
       <Header />
       <main className="inner-container mx-auto flex-grow flex flex-col items-center ">
         {children}

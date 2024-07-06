@@ -1,65 +1,26 @@
-import { useRef, useState } from "react";
 import Layout from "../components/Layout";
-import useMatchesData from "../hooks/useMatchesData";
-import Match from "../types/matches";
-import randomizeId from "../utils/randomizeId";
-import { GuessInputValues } from "../types/guessInputValues";
+
 import Button from "../components/Button";
 import Title from "../components/Title";
+import TeamCard from "../components/TeamCard";
+import GameOver from "../components/GameOver";
+import { ToastContainer } from "react-toastify";
+import useGuessTheResult from "../hooks/useGuessTheResult";
 
 const GuessTheResult = () => {
-  const [selectedMatch, setSelectedMatch] = useState<Match | null>(null);
-  const [gamePhase, setGamePhase] = useState("welcome");
-  const [score, setScore] = useState<number>(0);
-  const [inputValues, setInputValues] = useState<GuessInputValues>({
-    homeTeam: 0,
-    awayTeam: 0,
-  });
-  const { matches, loading, error } = useMatchesData();
-  const maxNumRef = useRef(0);
-  const prevMatchesRef = useRef<Match[]>([]);
-  const randomMatch = () => {
-    const randomId = randomizeId(matches);
-    const match = matches[randomId];
-    if (!prevMatchesRef.current.includes(match)) {
-      setSelectedMatch(match);
-      maxNumRef.current += 1;
-    }
-  };
-  const handleGameStart = () => {
-    setGamePhase("started");
-    randomMatch();
-  };
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInputValues((prevInputValues) => {
-      return {
-        ...prevInputValues,
-        [name]: Number(value),
-      };
-    });
-  };
-  const handleGuess = () => {
-    if (maxNumRef.current >= 5) {
-      setGamePhase("over");
-      return;
-    }
-    if (
-      selectedMatch?.awayTeamGoals === inputValues.awayTeam &&
-      selectedMatch.homeTeamGoals === inputValues.homeTeam
-    ) {
-      console.log("well done");
-      setScore((prevScore) => prevScore + 1);
-      randomMatch();
-    } else {
-      console.log("aasba");
-      setInputValues({
-        homeTeam: 0,
-        awayTeam: 0,
-      });
-      randomMatch();
-    }
-  };
+  const {
+    error,
+    loading,
+    score,
+    handleGameRestart,
+    handleGuess,
+    handleChange,
+    gamePhase,
+    handleGameStart,
+    selectedMatch,
+    inputValues,
+    inputRef,
+  } = useGuessTheResult();
   if (loading) {
     return <div>loading</div>;
   }
@@ -76,29 +37,40 @@ const GuessTheResult = () => {
         <Button text="start" onClick={handleGameStart} />
       )}
       {gamePhase === "started" && (
-        <section>
-          <div>
-            <div>{selectedMatch?.awayTeam.name}</div>{" "}
-            <input
-              onChange={(e) => handleChange(e)}
-              name="awayTeam"
-              value={inputValues.awayTeam}
-              type="number"
-              required
-            />
-            <div>{selectedMatch?.homeTeam.name}</div>{" "}
-            <input
-              onChange={(e) => handleChange(e)}
-              name="homeTeam"
-              value={inputValues.homeTeam}
-              type="number"
-              required
-            />
+        <section className="flex flex-col items-center gap-10">
+          <div className="flex flex-col items-center gap-3">
+            <img src={selectedMatch?.logo.logo} className="h-14 md:h-20" />
+            <div className="flex items-center gap-1 font-light text-[#2F4F4F] text-sm flex-col md:flex-row md:text-base md:gap-3">
+              <span>{selectedMatch?.competition}</span>
+              <span className="hidden md:block">-</span>
+              <span>{selectedMatch?.phase}</span>
+            </div>
+            <section className="flex items-center gap-7">
+              <TeamCard
+                teamName={selectedMatch?.homeTeam.name}
+                imgSrc={selectedMatch?.homeTeam.logo}
+                input={inputValues.homeTeam}
+                onChange={(e) => handleChange(e)}
+                name="homeTeam"
+                ref={inputRef}
+              />
+              <span className="text-lg font-thin">vs</span>
+              <TeamCard
+                teamName={selectedMatch?.awayTeam.name}
+                imgSrc={selectedMatch?.awayTeam.logo}
+                input={inputValues.awayTeam}
+                onChange={(e) => handleChange(e)}
+                name="awayTeam"
+              />
+            </section>
           </div>
-          <button onClick={handleGuess}>Guess</button>
+          <Button onClick={handleGuess} text="Guess" />
         </section>
       )}
-      {gamePhase === "over" && <div>your score is {score}</div>}
+      {gamePhase === "over" && (
+        <GameOver score={score} onClick={handleGameRestart} />
+      )}
+      <ToastContainer />
     </Layout>
   );
 };
