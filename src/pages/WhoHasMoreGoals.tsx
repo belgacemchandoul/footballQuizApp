@@ -1,76 +1,22 @@
-import { useState } from "react";
-import Layout from "../components/Layout";
-import usePlayersData from "../hooks/usePlayersData";
-import Player from "../types/players";
-import randomizeId from "../utils/randomizeId";
 import Button from "../components/Button";
 import Title from "../components/Title";
+import GameOver from "../components/GameOver";
+import { ToastContainer } from "react-toastify";
+import useWhoHasMoreGoals from "../hooks/useWhoHasMoreGoals";
+import Layout from "../components/Layout";
 
 const WhoHasMoreGoals = () => {
-  const [basePlayer, setBasePlayer] = useState<Player | null>(null);
-  const [nextPlayer, setNextPlayer] = useState<Player | null>(null);
-  const [score, setScore] = useState<number>(0);
-  const [gamePhase, setGamePhase] = useState<string>("welcome");
-
-  const { players, loading, error } = usePlayersData();
-
-  const handleGameStart = () => {
-    setGamePhase("started");
-    let validPlayerFound = false;
-    while (!validPlayerFound) {
-      const basePlayerRandomId = randomizeId(players);
-      const nextPlayerRandomId = randomizeId(players);
-      const basePlayer = players[basePlayerRandomId];
-      const nextPlayer = players[nextPlayerRandomId];
-
-      if (
-        basePlayer.goals !== null &&
-        nextPlayer.goals !== null &&
-        nextPlayer.goals !== basePlayer.goals
-      ) {
-        setBasePlayer(basePlayer);
-        setNextPlayer(nextPlayer);
-        validPlayerFound = true;
-      }
-    }
-  };
-  const nextPlayerGeneration = (currPlayer: Player) => {
-    let validPlayerFound = false;
-    while (!validPlayerFound) {
-      const nextPlayerRandomId = randomizeId(players);
-      const genPlayer = players[nextPlayerRandomId];
-
-      if (
-        currPlayer.goals !== null &&
-        genPlayer.goals !== null &&
-        genPlayer.goals !== currPlayer.goals
-      ) {
-        setNextPlayer(genPlayer);
-        validPlayerFound = true;
-      }
-    }
-  };
-  const handleGoalsCheck = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const { value } = e.currentTarget;
-    if (
-      basePlayer === null ||
-      basePlayer.goals === null ||
-      nextPlayer === null ||
-      nextPlayer.goals === null
-    )
-      return;
-    if (basePlayer.goals < nextPlayer.goals && value === "more") {
-      setBasePlayer(nextPlayer);
-      nextPlayerGeneration(nextPlayer);
-      setScore((prevScore) => prevScore + 1);
-    } else if (basePlayer.goals > nextPlayer.goals && value === "less") {
-      setBasePlayer(nextPlayer);
-      nextPlayerGeneration(nextPlayer);
-      setScore((prevScore) => prevScore + 1);
-    } else {
-      setGamePhase("over");
-    }
-  };
+  const {
+    score,
+    gamePhase,
+    loading,
+    error,
+    handleGameRestart,
+    basePlayer,
+    nextPlayer,
+    handleGoalsCheck,
+    handleGameStart,
+  } = useWhoHasMoreGoals();
 
   if (loading) {
     return <div>Loading..</div>;
@@ -88,22 +34,35 @@ const WhoHasMoreGoals = () => {
         <Button text="start" onClick={handleGameStart} />
       )}
       {gamePhase === "started" && (
-        <section>
-          <div>
-            {basePlayer?.name}
-            <div>
+        <section className="flex gap-5 flex-col md:flex-row md:gap-32">
+          <div className="flex flex-col gap-2 items-center md:text-xl md:font-semibold font-medium md:gap-4 text-[#2F4F4F]">
+            <span>{basePlayer?.name}</span>
+            <span>{basePlayer?.goals} goals</span>
+          </div>
+          <hr className="md:hidden" />
+          <div className="flex flex-col gap-4 items-center ">
+            <span className="md:text-xl md:font-semibold font-medium text-[#2F4F4F]">
               {nextPlayer?.name}
-              <button onClick={(e) => handleGoalsCheck(e)} value="more">
-                more
-              </button>
-              <button onClick={(e) => handleGoalsCheck(e)} value="less">
-                less
-              </button>
+            </span>
+            <div className="flex gap-4">
+              <Button
+                value="more"
+                text="more"
+                onClick={(e) => handleGoalsCheck(e)}
+              />
+              <Button
+                value="less"
+                text="less"
+                onClick={(e) => handleGoalsCheck(e)}
+              />
             </div>
           </div>
         </section>
       )}
-      {gamePhase === "over" && <div>your score is {score}</div>}
+      {gamePhase === "over" && (
+        <GameOver score={score} onClick={handleGameRestart} />
+      )}
+      <ToastContainer />
     </Layout>
   );
 };
