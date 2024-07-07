@@ -7,6 +7,7 @@ import normalizeString from "../utils/normalizeString";
 import handleRepetition from "../utils/handleRepetition";
 import Button from "../components/Button";
 import Title from "../components/Title";
+import PlayerCard from "../components/PlayerCard";
 
 const WhoIsMissing = () => {
   const { squads, loading, error } = useSquadsData();
@@ -25,6 +26,7 @@ const WhoIsMissing = () => {
     const randomId = randomizeId(squads);
     const squad = squads[randomId];
     if (!prevSquadRef.current.includes(squad)) {
+      prevSquadRef.current = handleRepetition(squad, prevSquadRef.current);
       prevSquadRef.current = handleRepetition(squad, prevSquadRef.current);
       setSelectedSquad(squad);
       maxNumRef.current += 1;
@@ -47,6 +49,27 @@ const WhoIsMissing = () => {
       randomSquad();
     }
   };
+  const positionCoordinates: { [key: string]: { top: string; left: string } } =
+    {
+      GK: { top: "90%", left: "50%" },
+      LB: { top: "68%", left: "15%" },
+      RB: { top: "68%", left: "85%" },
+      LCB: { top: "71%", left: "40%" },
+      RCB: { top: "71%", left: "60%" },
+      LCDM: { top: "53%", left: "30%" },
+      RCDM: { top: "53%", left: "70%" },
+      CDM: { top: "53%", left: "50%" },
+      CM: { top: "43%", left: "50%" },
+      LCM: { top: "43%", left: "30%" },
+      RCM: { top: "43%", left: "70%" },
+      CAM: { top: "35%", left: "50%" },
+      LCAM: { top: "35%", left: "30%" },
+      RCAM: { top: "35%", left: "70%" },
+      LW: { top: "25%", left: "15%" },
+      RW: { top: "25%", left: "85%" },
+      CF: { top: "15%", left: "50%" },
+    };
+
   if (loading) {
     return <div>Loading</div>;
   }
@@ -63,7 +86,33 @@ const WhoIsMissing = () => {
         <Button text="start" onClick={handleGameStart} />
       )}
       {gamePhase === "started" && (
-        <section>
+        <section className="relative w-full h-screen flex items-center flex-col">
+          <div
+            className="relative w-1/2 h-3/4 bg-no-repeat bg-cover"
+            style={{
+              backgroundImage: 'url("/pitch.svg")',
+              backgroundSize: "cover",
+              backgroundPosition: "center bottom",
+            }}
+          >
+            {selectedSquad?.players.map((player) => {
+              const position = player.position;
+              const coordinates = positionCoordinates[position];
+              const playerName =
+                player.name === selectedSquad.missingPlayer
+                  ? "???"
+                  : player.name;
+              if (!coordinates) return null;
+              return (
+                <PlayerCard
+                  key={player.name}
+                  coordinates={coordinates}
+                  playerName={playerName}
+                  playerNumber={player.number}
+                />
+              );
+            })}
+          </div>
           <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
