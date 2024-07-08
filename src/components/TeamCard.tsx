@@ -1,37 +1,20 @@
-import React, { forwardRef } from "react";
-import Input from "./Input";
-
-type Team = {
+type TeamCard = {
   imgSrc?: string;
   teamName?: string;
-  input: number;
-  name: string;
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
-const TeamCard = forwardRef<HTMLInputElement, Team>(
-  ({ imgSrc, teamName, input, onChange, name }, ref) => {
-    return (
-      <div className="flex flex-col items-center gap-3">
-        <div className="flex flex-col items-center gap-2">
-          <img src={imgSrc} className="h-12 md:h-16" alt={teamName} />
-          <span className="text-[#2F4F4F] text-sm md:text-base">
-            {teamName}
-          </span>
+const TeamCard = ({ imgSrc, teamName }: TeamCard) => {
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className="flex flex-col items-center gap-2">
+        <div className="flex items-center gap-4">
+          <img src={imgSrc} className="h-12" alt={teamName} />
         </div>
-        <Input
-          onChange={onChange}
-          name={name}
-          value={input}
-          type="number"
-          placeholder=""
-          ref={ref}
-        />
-      </div>
-    );
-  }
-);
 
-TeamCard.displayName = "TeamCard";
+        <span className="text-[#2F4F4F] text-sm">{teamName}</span>
+      </div>
+    </div>
+  );
+};
 
 export default TeamCard;

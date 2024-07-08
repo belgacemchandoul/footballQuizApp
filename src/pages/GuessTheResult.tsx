@@ -2,7 +2,7 @@ import Layout from "../components/Layout";
 
 import Button from "../components/Button";
 import Title from "../components/Title";
-import TeamCard from "../components/TeamCard";
+import TeamScoreBoardCard from "../components/TeamScoreBoardCard";
 import GameOver from "../components/GameOver";
 import { ToastContainer } from "react-toastify";
 import useGuessTheResult from "../hooks/useGuessTheResult";
@@ -46,7 +46,7 @@ const GuessTheResult = () => {
               <span>{selectedMatch?.phase}</span>
             </div>
             <section className="flex items-center gap-7">
-              <TeamCard
+              <TeamScoreBoardCard
                 teamName={selectedMatch?.homeTeam.name}
                 imgSrc={selectedMatch?.homeTeam.logo}
                 input={inputValues.homeTeam}
@@ -55,7 +55,7 @@ const GuessTheResult = () => {
                 ref={inputRef}
               />
               <span className="text-lg font-thin">vs</span>
-              <TeamCard
+              <TeamScoreBoardCard
                 teamName={selectedMatch?.awayTeam.name}
                 imgSrc={selectedMatch?.awayTeam.logo}
                 input={inputValues.awayTeam}

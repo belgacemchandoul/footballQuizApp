@@ -19,7 +19,7 @@ const PlayerCard = ({ playerName, coordinates, playerNumber }: PlayerData) => {
         transform: "translate(-50%, -50%)",
       }}
     >
-      <span className=" w-8 h-8 bg-violet-800 text-white rounded-full items-center flex justify-center border text-xs">
+      <span className=" w-6 h-6 md:w-8 md:h-8 bg-violet-800 text-white rounded-full items-center flex justify-center border text-xs">
         {playerNumber}
       </span>
       <span className="text-xs text-white font-medium w-full text-center">
