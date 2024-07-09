@@ -1,2 +1,5 @@
+# Exclude the build and assets directories from GitHub language statistics
 dist/* linguist-vendored
 assets/* linguist-vendored
+public/* linguist-vendored
+node_modules/* linguist-vendored
