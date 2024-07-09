@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-
 import usePlayersData from "./usePlayersData";
 import Player from "../types/players";
 import normalizeString from "../utils/normalizeString";
 import randomizeId from "../utils/randomizeId";
 import handleRepetition from "../utils/handleRepetition";
-
 import { Bounce, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 
 const useWhoAmI = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
@@ -39,10 +36,7 @@ const useWhoAmI = () => {
         player.career.length > 1 &&
         !prevPlayersRef.current.includes(player)
       ) {
-        prevPlayersRef.current = handleRepetition(
-          player,
-          prevPlayersRef.current
-        );
+        prevPlayersRef.current = handleRepetition(player, prevPlayersRef.current);
         setSelectedPlayer(player);
         maxNumRef.current += 1;
         validPlayerFound = true;
@@ -83,9 +77,9 @@ const useWhoAmI = () => {
       const normalizedGuess = normalizeString(guessInput);
       const normalizedPlayerName = normalizeString(selectedPlayer.name);
 
-      if (normalizedGuess === normalizedPlayerName) {
+      if (normalizedGuess.trim() === normalizedPlayerName) {
         setScore((prevScore) => prevScore + 1);
-        toast.success("Correct, well done !", {
+        toast.success("Correct, well done!", {
           position: "top-center",
           autoClose: 1000,
           theme: "colored",
@@ -110,12 +104,25 @@ const useWhoAmI = () => {
   const handleGameRestart = () => {
     setScore(0);
     maxNumRef.current = 0;
-    prevPlayersRef.current = []
+    prevPlayersRef.current = [];
     setGuessInput("");
     setShowNextPlayer(false);
-    handleGameStart()
+    handleGameStart();
   };
-  return { selectedPlayer, gamePhase, score, loading, inputRef, error, guessInput, handleGameStart, handleGuess, handleGameRestart, setGuessInput, }
-}
 
-export default useWhoAmI
+  return {
+    selectedPlayer,
+    gamePhase,
+    score,
+    loading,
+    inputRef,
+    error,
+    guessInput,
+    handleGameStart,
+    handleGuess,
+    handleGameRestart,
+    setGuessInput,
+  };
+};
+
+export default useWhoAmI;

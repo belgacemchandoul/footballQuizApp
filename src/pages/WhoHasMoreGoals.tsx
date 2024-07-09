@@ -1,9 +1,11 @@
-import Button from "../components/Button";
-import Title from "../components/Title";
-import GameOver from "../components/GameOver";
-import { ToastContainer } from "react-toastify";
+import { lazy, Suspense } from "react";
+const Layout = lazy(() => import("../components/Layout"));
+const Title = lazy(() => import("../components/Title"));
+const Button = lazy(() => import("../components/Button"));
+const GameOver = lazy(() => import("../components/GameOver"));
+const LoadingSpinner = lazy(() => import("../components/LoadingSpinner"));
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import useWhoHasMoreGoals from "../hooks/useWhoHasMoreGoals";
-import Layout from "../components/Layout";
 
 const WhoHasMoreGoals = () => {
   const {
@@ -19,10 +21,16 @@ const WhoHasMoreGoals = () => {
   } = useWhoHasMoreGoals();
 
   if (loading) {
-    return <div>Loading..</div>;
+    return <Suspense fallback={<LoadingSpinner />} />;
   }
   if (error) {
-    console.error(error);
+    toast.error(`an error happened , ${error}`, {
+      position: "top-center",
+      autoClose: 2000,
+      theme: "colored",
+      hideProgressBar: true,
+      transition: Bounce,
+    });
   }
   return (
     <Layout>

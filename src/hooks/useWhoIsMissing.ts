@@ -5,6 +5,7 @@ import randomizeId from "../utils/randomizeId";
 import normalizeString from "../utils/normalizeString";
 import handleRepetition from "../utils/handleRepetition";
 import { Bounce, toast } from "react-toastify";
+
 const useWhoIsMissing = () => {
   const { squads, loading, error } = useSquadsData();
   const [selectedSquad, setSelectedSquad] = useState<Squad | null>(null);
@@ -46,6 +47,7 @@ const useWhoIsMissing = () => {
       }
     }
   }, [randomSquad, showNextSquad]);
+
   const handleGameStart = () => {
     if (inputRef.current !== null) {
       inputRef.current.focus();
@@ -53,6 +55,7 @@ const useWhoIsMissing = () => {
     setGamePhase("started");
     randomSquad();
   };
+
   const handleGuess = () => {
     if (selectedSquad === null) return;
     if (input.length === 0) {
@@ -65,12 +68,10 @@ const useWhoIsMissing = () => {
       });
     } else {
       const normalizedGuess = normalizeString(input);
-      const normalizedPlayerName = normalizeString(
-        selectedSquad?.missingPlayer
-      );
-      if (normalizedGuess === normalizedPlayerName) {
-        setScore((prevScore) => (prevScore += 1));
-        toast.success("Correct, well done !", {
+      const normalizedPlayerName = normalizeString(selectedSquad.missingPlayer);
+      if (normalizedGuess.trim() === normalizedPlayerName) {
+        setScore((prevScore) => prevScore + 1);
+        toast.success("Correct, well done!", {
           position: "top-center",
           autoClose: 1000,
           theme: "colored",
@@ -80,7 +81,7 @@ const useWhoIsMissing = () => {
         });
       } else {
         toast.error(
-          `Wrong! The correct answer was: ${selectedSquad.missingPlayer} .`,
+          `Wrong! The correct answer was: ${selectedSquad.missingPlayer}.`,
           {
             position: "top-center",
             autoClose: 1000,
@@ -94,6 +95,7 @@ const useWhoIsMissing = () => {
       setInput("");
     }
   };
+
   const handleGameRestart = () => {
     setScore(0);
     maxNumRef.current = 0;
@@ -101,8 +103,8 @@ const useWhoIsMissing = () => {
     setInput("");
     handleGameStart();
   };
-  const positionCoordinates: { [key: string]: { top: string; left: string } } =
-  {
+
+  const positionCoordinates: { [key: string]: { top: string; left: string } } = {
     GK: { top: "90%", left: "50%" },
     LB: { top: "68%", left: "15%" },
     RB: { top: "68%", left: "85%" },
@@ -122,7 +124,20 @@ const useWhoIsMissing = () => {
     CF: { top: "15%", left: "50%" },
   };
 
-  return { loading, error, score, gamePhase, positionCoordinates, input, setInput, handleGameRestart, handleGuess, handleGameStart, inputRef, selectedSquad }
-}
+  return {
+    loading,
+    error,
+    score,
+    gamePhase,
+    positionCoordinates,
+    input,
+    setInput,
+    handleGameRestart,
+    handleGuess,
+    handleGameStart,
+    inputRef,
+    selectedSquad,
+  };
+};
 
-export default useWhoIsMissing
+export default useWhoIsMissing;

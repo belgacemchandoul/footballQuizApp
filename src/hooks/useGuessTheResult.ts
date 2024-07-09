@@ -46,6 +46,7 @@ const useGuessTheResult = () => {
       }
     }
   }, [randomMatch, showNextMatch]);
+
   const handleGameStart = () => {
     if (inputRef.current !== null) {
       inputRef.current.focus();
@@ -53,6 +54,7 @@ const useGuessTheResult = () => {
     setGamePhase("started");
     randomMatch();
   };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setInputValues((prevInputValues) => {
@@ -62,6 +64,7 @@ const useGuessTheResult = () => {
       };
     });
   };
+
   const handleGuess = () => {
     if (selectedMatch === null) return;
     if (
@@ -69,7 +72,7 @@ const useGuessTheResult = () => {
       selectedMatch.homeTeamGoals === inputValues.homeTeam
     ) {
       setScore((prevScore) => prevScore + 1);
-      toast.success("Correct, well done !", {
+      toast.success("Correct, well done!", {
         position: "top-center",
         autoClose: 1000,
         theme: "colored",
@@ -83,7 +86,7 @@ const useGuessTheResult = () => {
       });
     } else {
       toast.error(
-        `Wrong! The correct answer was: ${selectedMatch.homeTeam.name} ${selectedMatch.homeTeamGoals} - ${selectedMatch.awayTeam.name} ${selectedMatch.awayTeamGoals} .`,
+        `Wrong! The correct answer was: ${selectedMatch.homeTeam.name} ${selectedMatch.homeTeamGoals} - ${selectedMatch.awayTeam.name} ${selectedMatch.awayTeamGoals}.`,
         {
           position: "top-center",
           autoClose: 1000,
@@ -99,11 +102,11 @@ const useGuessTheResult = () => {
       });
     }
   };
+
   const handleGameRestart = () => {
     setScore(0);
     maxNumRef.current = 0;
     prevMatchesRef.current = [];
-
     setInputValues({
       homeTeam: 0,
       awayTeam: 0,
@@ -111,7 +114,20 @@ const useGuessTheResult = () => {
     setShowNextMatch(false);
     handleGameStart();
   };
-  return { error, loading, score, gamePhase, handleGameRestart, handleGuess, handleChange, handleGameStart, selectedMatch, inputValues, inputRef }
-}
 
-export default useGuessTheResult
+  return {
+    error,
+    loading,
+    score,
+    gamePhase,
+    handleGameRestart,
+    handleGuess,
+    handleChange,
+    handleGameStart,
+    selectedMatch,
+    inputValues,
+    inputRef,
+  };
+};
+
+export default useGuessTheResult;

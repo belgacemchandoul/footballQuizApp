@@ -1,11 +1,13 @@
-import Layout from "../components/Layout";
-import Button from "../components/Button";
-import Title from "../components/Title";
-import Input from "../components/Input";
-import { ToastContainer } from "react-toastify";
+import { lazy, Suspense } from "react";
+const Layout = lazy(() => import("../components/Layout"));
+const Button = lazy(() => import("../components/Button"));
+const Title = lazy(() => import("../components/Title"));
+const Input = lazy(() => import("../components/Input"));
+const GameOver = lazy(() => import("../components/GameOver"));
+const LoadingSpinner = lazy(() => import("../components/LoadingSpinner"));
 import "react-toastify/dist/ReactToastify.css";
+import { Bounce, toast, ToastContainer } from "react-toastify";
 import useWhoAmI from "../hooks/useWhoAmI";
-import GameOver from "../components/GameOver";
 
 const WhoAmI = () => {
   const {
@@ -23,10 +25,16 @@ const WhoAmI = () => {
   } = useWhoAmI();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Suspense fallback={<LoadingSpinner />} />;
   }
   if (error) {
-    console.error(error);
+    toast.error(`An error occurred: ${error}`, {
+      position: "top-center",
+      autoClose: 2000,
+      theme: "colored",
+      hideProgressBar: true,
+      transition: Bounce,
+    });
   }
 
   return (
@@ -36,9 +44,9 @@ const WhoAmI = () => {
         description="Think you can guess the footballer from their career path? Welcome to Who Am I?, the ultimate challenge for true football enthusiasts! You'll be given a series of clues detailing the clubs a player has been a part of throughout their career. Your task is to identify the footballer based on these career milestones."
       />
       {gamePhase === "welcome" && (
-        <Button text="start" onClick={handleGameStart} />
+        <Button text="Start" onClick={handleGameStart} />
       )}
-      {gamePhase === "started" && (
+      {gamePhase === "started" && selectedPlayer && (
         <div className="flex flex-col items-center gap-10">
           <span className="font-medium text-base md:text-xl text-indigo-800">
             Player's career
@@ -64,8 +72,7 @@ const WhoAmI = () => {
               type="text"
               ref={inputRef}
             />
-
-            <Button text="guess" onClick={handleGuess} />
+            <Button text="Guess" onClick={handleGuess} />
           </section>
         </div>
       )}
