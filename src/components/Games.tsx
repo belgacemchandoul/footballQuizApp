@@ -1,6 +1,5 @@
-import { lazy } from "react";
 import gameModes from "../data/gameModes.json";
-const GameCard = lazy(() => import("./GameCard"));
+import GameCard from "./GameCard";
 const Games = () => {
   return (
     <div className="grid lg:grid-cols-2 gap-8 mb-20 sm:grid-cols-1 md:grid-cols-2">

@@ -1,14 +1,11 @@
-import { lazy, Suspense } from "react";
-const Layout = lazy(() => import("../components/Layout"));
-const Button = lazy(() => import("../components/Button"));
-const Title = lazy(() => import("../components/Title"));
-const TeamScoreBoardCard = lazy(
-  () => import("../components/TeamScoreBoardCard")
-);
-const GameOver = lazy(() => import("../components/GameOver"));
-const LoadingSpinner = lazy(() => import("../components/LoadingSpinner"));
+import Layout from "../components/Layout";
+import Button from "../components/Button";
+import Title from "../components/Title";
+import TeamScoreBoardCard from "../components/TeamScoreBoardCard";
+import GameOver from "../components/GameOver";
 import { Bounce, toast, ToastContainer } from "react-toastify";
 import useGuessTheResult from "../hooks/useGuessTheResult";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const GuessTheResult = () => {
   const {
@@ -26,7 +23,7 @@ const GuessTheResult = () => {
   } = useGuessTheResult();
 
   if (loading) {
-    return <Suspense fallback={<LoadingSpinner />} />;
+    return <LoadingSpinner />;
   }
 
   if (error) {

@@ -1,13 +1,12 @@
-import { lazy, Suspense } from "react";
-const Layout = lazy(() => import("../components/Layout"));
-const Button = lazy(() => import("../components/Button"));
-const Title = lazy(() => import("../components/Title"));
-const Input = lazy(() => import("../components/Input"));
-const GameOver = lazy(() => import("../components/GameOver"));
-const LoadingSpinner = lazy(() => import("../components/LoadingSpinner"));
-import "react-toastify/dist/ReactToastify.css";
+import Layout from "../components/Layout";
+import Button from "../components/Button";
+import Title from "../components/Title";
+import Input from "../components/Input";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import useWhoAmI from "../hooks/useWhoAmI";
+import GameOver from "../components/GameOver";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const WhoAmI = () => {
   const {
@@ -25,7 +24,7 @@ const WhoAmI = () => {
   } = useWhoAmI();
 
   if (loading) {
-    return <Suspense fallback={<LoadingSpinner />} />;
+    return <LoadingSpinner />;
   }
   if (error) {
     toast.error(`An error occurred: ${error}`, {

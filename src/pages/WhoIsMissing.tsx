@@ -1,14 +1,13 @@
-import { lazy, Suspense } from "react";
-const Layout = lazy(() => import("../components/Layout"));
-const Title = lazy(() => import("../components/Title"));
-const PlayerCard = lazy(() => import("../components/PlayerCard"));
-const GameOver = lazy(() => import("../components/GameOver"));
-const LoadingSpinner = lazy(() => import("../components/LoadingSpinner"));
-const Button = lazy(() => import("../components/Button"));
-const Input = lazy(() => import("../components/Input"));
-const TeamCard = lazy(() => import("../components/TeamCard"));
+import Layout from "../components/Layout";
+import Button from "../components/Button";
+import Title from "../components/Title";
+import PlayerCard from "../components/PlayerCard";
+import GameOver from "../components/GameOver";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import Input from "../components/Input";
+import TeamCard from "../components/TeamCard";
 import useWhoIsMissing from "../hooks/useWhoIsMissing";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const WhoIsMissing = () => {
   const {
@@ -27,7 +26,7 @@ const WhoIsMissing = () => {
   } = useWhoIsMissing();
 
   if (loading) {
-    return <Suspense fallback={<LoadingSpinner />} />;
+    return <LoadingSpinner />;
   }
 
   if (error) {
