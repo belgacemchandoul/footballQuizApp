@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-# Exclude the build and assets directories from GitHub language statistics
+
 dist/* linguist-vendored
 assets/* linguist-vendored
 public/* linguist-vendored
 node_modules/* linguist-vendored
-=======
-dist/* linguist-vendored
-assets/* linguist-vendored
->>>>>>> 549de11fc63b36a6c9e9c0257e36299d24295335
