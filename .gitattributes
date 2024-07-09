@@ -1,5 +1,0 @@
-
-dist/* linguist-vendored
-assets/* linguist-vendored
-public/* linguist-vendored
-node_modules/* linguist-vendored
