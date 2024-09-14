@@ -69,11 +69,6 @@
     npm install
 
 </li>
-<li>Create a .env file and add your Hugging Face API key:
-
-    VITE_HF_API_KEY =your_api_key
-
-</li>
 <li>Start the development server:
 
     npm run dev
